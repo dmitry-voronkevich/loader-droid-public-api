@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="AddLoadingActivityTheme">
+        <attr name="ldapi_dialogCompatStyle" format="reference"/>
+        <attr name="ldapi_dialogDividerCompat" format="reference"/>
+    </declare-styleable>
+</resources>

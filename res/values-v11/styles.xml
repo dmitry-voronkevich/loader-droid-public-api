@@ -1,0 +1,19 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="AddLoadingActivityTheme.White" parent="@android:style/Theme.Holo.Light.NoActionBar">
+        <item name="ldapi_dialogCompatStyle">@style/DialogCompat.White</item>
+        
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+    
+    <style name="AddLoadingActivityTheme.Black" parent="@android:style/Theme.Holo.NoActionBar">
+        <item name="ldapi_dialogCompatStyle">@style/DialogCompat.Black</item>
+        
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+</resources>
