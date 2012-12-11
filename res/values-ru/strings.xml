@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ldapi_dialog_install_title">Для начала установите Loader Droid</string>
+    <string name="ldapi_dialog_install_description">Пожалуйста, установите Loader Droid, если вы хотите эффективно загрузить ваш файл</string>
+    <string name="ldapi_dialog_install_brief_intro">Это качественный менеджер закачек под андроид</string>
+    <string name="ldapi_dialog_install_highlits">
+Особенности:\n
+* Возобновляемая загрузка (продолжает скачивание с того же места, на котором оно было прервано)\n
+* Автоматическая пауза загрузок при потере соединения\n
+* Автоматическое возобновление закачки при восстановлении соединенения\n
+* Вы можете указать по какому соединению разрешено качать каждую отдельную ссылку (WI-FI, 3G и т.д.)\n
+* Поддерживает загрузку в несколько потоков, ускоряя загрузку в 3 раза\n
+* Стабильный, быстрый и простой в использовании\n
+    </string>
+    <string name="ldapi_dialog_install_help">Перейдите в Google Play и установите Loader Droid. Как только он будет установлен - вернитесь в это окно и фаш файл будет добавлен на закачку</string>
+    <string name="ldapi_dialog_update_title">Для начата обновите Loader Droid</string>
+    <string name="ldapi_dialog_update_description">Пожалуйста, обновите Loader Droid, если вы хотите эффективно загрузить ваш файл</string>
+    <string name="ldapi_dialog_update_help">Перейдите в Google Play и обновите Loader Droid. Как только он будет обновлен - вернитесь в это окно и фаш файл будет добавлен на закачку</string>
+    <string name="ldapi_go_google_play">Перейти в Google Play</string>
+    <string name="ldapi_no_google_play_toast">У вас к сожалению не установлен Google Play</string>
+</resources>
