@@ -18,12 +18,38 @@ public class InstallLoaderDroidDialogFragment extends DialogFragment {
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		if (LoaderDroidPublicAPI.isLoaderDroidRequireUpdate(getActivity())) {
+			return createUpdateDialog();
+		} else {
+			return createInstallDialog();
+		}
+	}
+
+	private Dialog createInstallDialog() {
 		AlertDialogBuilderCompat builder = AlertDialogBuilderCompat.newInstance(getActivity());
-		builder.setTitle(R.string.ldapi_dialog_title);
+		builder.setTitle(R.string.ldapi_dialog_install_title);
 		builder.setView(R.layout.ldapi_install_dialog);
 		builder.setPositiveButton(R.string.ldapi_go_google_play, createGoGooglePlayListener());
 		builder.setNegativeButton(android.R.string.cancel, createCancelListener());
 		return builder.create();
+	}
+
+	private Dialog createUpdateDialog() {
+		AlertDialogBuilderCompat builder = AlertDialogBuilderCompat.newInstance(getActivity());
+		builder.setTitle(R.string.ldapi_dialog_update_title);
+		builder.setView(R.layout.ldapi_update_dialog);
+		builder.setPositiveButton(R.string.ldapi_go_google_play, createGoGooglePlayListener());
+		builder.setNegativeButton(android.R.string.cancel, createCancelListener());
+		return builder.create();
+	}
+	
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		super.onCancel(dialog);
+		FragmentActivity activity = getActivity();
+		if (activity == null)
+			return;
+		activity.finish();
 	}
 
 	private OnClickListener createCancelListener() {
@@ -37,7 +63,7 @@ public class InstallLoaderDroidDialogFragment extends DialogFragment {
 			}
 		};
 	}
-
+	
 	private OnClickListener createGoGooglePlayListener() {
 		return new OnClickListener() {
 			

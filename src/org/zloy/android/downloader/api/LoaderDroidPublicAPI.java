@@ -60,6 +60,26 @@ public class LoaderDroidPublicAPI {
 	}
 	
 	/**
+	 * Checks if Loader Droid is installed but should be updated
+	 * 
+	 * @param ctx
+	 * @return true if LoaderDroid need update
+	 */
+	public static boolean isLoaderDroidRequireUpdate(Context ctx) {
+		PackageManager packageManager = ctx.getPackageManager();
+		if (packageManager == null) // sometimes this can happen on strange devices
+			return false;
+		List<PackageInfo> packages = packageManager.getInstalledPackages(0);
+		if (packages == null)
+			return false;
+		for (PackageInfo info: packages) {
+			if (info != null && LOADER_DROID_PACKAGE.equals(info.packageName) && info.versionCode < MINIMUM_VERSION)
+				return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Adds loading to LD.
 	 * 
 	 * LD will ask user for loading details
@@ -152,4 +172,5 @@ public class LoaderDroidPublicAPI {
 			return false;
 		}
 	}
+
 }
