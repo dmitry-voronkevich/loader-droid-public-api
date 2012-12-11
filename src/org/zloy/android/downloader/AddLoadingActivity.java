@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -20,11 +19,6 @@ public class AddLoadingActivity extends FragmentActivity {
 	private boolean mIsInstallationReceiverRegistered = false;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-	
-	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		mInstallationReceiver = null;
@@ -36,6 +30,7 @@ public class AddLoadingActivity extends FragmentActivity {
 		super.onResume();
 		// This is done in on resume because when user did not have LD installed and was asked to install it
 		// He might already return back to this activity
+		hideDialog();
 		if (LoaderDroidPublicAPI.isLoaderDroidInstalled(this)) {
 			delegateLoadingToLoaderDroid();
 		} else {
@@ -72,7 +67,8 @@ public class AddLoadingActivity extends FragmentActivity {
 			registerReceiver(mInstallationReceiver, mInstallationFilter);
 			mIsInstallationReceiverRegistered = true;
 		}
-		new InstallLoaderDroidDialogFragment().show(getSupportFragmentManager(), TAG_DIALOG);
+		InstallLoaderDroidDialogFragment dialog = new InstallLoaderDroidDialogFragment();
+		getSupportFragmentManager().beginTransaction().add(dialog, TAG_DIALOG).commitAllowingStateLoss();
 	}
 	
 	private BroadcastReceiver createInstallationReceiver() {
@@ -87,9 +83,9 @@ public class AddLoadingActivity extends FragmentActivity {
 		};
 	}
 	void hideDialog() {
-		DialogFragment fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(TAG_DIALOG);
-		if (fragment != null) {
-			fragment.dismiss();
+		DialogFragment dialog = (DialogFragment) getSupportFragmentManager().findFragmentByTag(TAG_DIALOG);
+		if (dialog != null) {
+			dialog.dismiss();
 		}
 	}
 	
@@ -106,8 +102,9 @@ public class AddLoadingActivity extends FragmentActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int result, Intent intent) {
 		super.onActivityResult(requestCode, result, intent);
-		if (requestCode == REQUEST_CODE_ADD_LOADING)
+		if (requestCode == REQUEST_CODE_ADD_LOADING) {
 			finish();
+		}
 	}
 
 }
