@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ldapi_dialog_install_title">Please install Loader Droid first</string>
-    <string name="ldapi_dialog_install_description">If you want efficiently load your link, please install LoaderDroid.</string>
+    <string name="ldapi_dialog_install_description">If you want efficiently load your link, please install LoaderDroid</string>
     <string name="ldapi_dialog_install_brief_intro">Loader Droid is high quality download manager for Android</string>
     <string name="ldapi_dialog_install_highlits">
 HIGHLIGHTS:\n
