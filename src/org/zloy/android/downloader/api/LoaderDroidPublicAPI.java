@@ -40,8 +40,9 @@ public class LoaderDroidPublicAPI {
 	public static final String RESULT_EXTRA_FILE = "file";
 	
 	// First version which supports open api
-	private static final int MINIMUM_VERSION = 44;
-	private static final int VERSION_WITH_SILENT_ADD = 45;
+	public static final int VERSION_WITH_MINIMUM_SUPPORT = 44;
+	public static final int VERSION_WITH_SILENT_ADD = 45;
+	public static final int VERSION_WITH_OPEN_DETAILS_ACTIVITY = 47;
 	
 	public static int API_VERSION = 1; 
 	
@@ -73,7 +74,7 @@ public class LoaderDroidPublicAPI {
 	 * @return
 	 */
 	public static boolean isLoaderDroidInstalled(Context ctx) {
-		return getLoaderDroidVersion(ctx) >= MINIMUM_VERSION;
+		return getLoaderDroidVersion(ctx) >= VERSION_WITH_MINIMUM_SUPPORT;
 	}
 	
 	/**
@@ -83,7 +84,7 @@ public class LoaderDroidPublicAPI {
 	 * @return true if LoaderDroid need update
 	 */
 	public static boolean isLoaderDroidRequireUpdate(Context ctx) {
-		return getLoaderDroidVersion(ctx) < MINIMUM_VERSION;
+		return getLoaderDroidVersion(ctx) < VERSION_WITH_MINIMUM_SUPPORT;
 	}
 	
 	/**
@@ -155,7 +156,7 @@ public class LoaderDroidPublicAPI {
 		Intent intent;
 		boolean allowSilentAdd = false;
 		// No loader droid, or it should be updated
-		if (loaderVersion < MINIMUM_VERSION) {
+		if (loaderVersion < VERSION_WITH_MINIMUM_SUPPORT) {
 			if (missingLDAction == MissingLDAction.ASK_USER_TO_INSTALL_LD) {
 				intent = new Intent(ctx, AddLoadingActivity.class);
 			} else {
