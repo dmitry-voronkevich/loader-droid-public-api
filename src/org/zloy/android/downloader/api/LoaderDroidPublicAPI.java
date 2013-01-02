@@ -84,7 +84,8 @@ public class LoaderDroidPublicAPI {
 	 * @return true if LoaderDroid need update
 	 */
 	public static boolean isLoaderDroidRequireUpdate(Context ctx) {
-		return getLoaderDroidVersion(ctx) < VERSION_WITH_MINIMUM_SUPPORT;
+		int version = getLoaderDroidVersion(ctx);
+		return version > 0 && version < VERSION_WITH_MINIMUM_SUPPORT;
 	}
 	
 	/**
