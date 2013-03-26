@@ -15,7 +15,6 @@
     <string name="ldapi_dialog_install_help">Перейдите в Google Play и установите Loader Droid. Как только он будет установлен - вернитесь в это окно и фаш файл будет добавлен на закачку</string>
     <string name="ldapi_dialog_update_title">Для начата обновите Loader Droid</string>
     <string name="ldapi_dialog_update_description">Пожалуйста, обновите Loader Droid, если вы хотите эффективно загрузить ваш файл</string>
-    <string name="ldapi_dialog_update_help">Перейдите в Google Play и обновите Loader Droid. Как только он будет обновлен - вернитесь в это окно и фаш файл будет добавлен на закачку</string>
-    <string name="ldapi_go_google_play">Перейти в Google Play</string>
-    <string name="ldapi_no_google_play_toast">У вас к сожалению не установлен Google Play</string>
+    <string name="ldapi_dialog_update_help">Перейдите в один из маркетов и обновите Loader Droid. Как только он будет обновлен - вернитесь в это окно и фаш файл будет добавлен на закачку</string>
+    <string name="ldapi_no_google_play_toast">У вас к сожалению не установлен маркет</string>
 </resources>

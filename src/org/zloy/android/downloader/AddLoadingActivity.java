@@ -85,7 +85,7 @@ public class AddLoadingActivity extends FragmentActivity {
 	void hideDialog() {
 		DialogFragment dialog = (DialogFragment) getSupportFragmentManager().findFragmentByTag(TAG_DIALOG);
 		if (dialog != null) {
-			dialog.dismiss();
+			getSupportFragmentManager().beginTransaction().remove(dialog).commitAllowingStateLoss();
 		}
 	}
 	

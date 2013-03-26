@@ -12,10 +12,9 @@ HIGHLIGHTS:\n
 - You can define what connection is allowed for each link (WI-FI, 3G, etc)\n
 - Stable, fast and easy to use\n
     </string>
-    <string name="ldapi_dialog_install_help">Please go to Google Play and install LoaderDroid there. Once it is installed, return back here and your loading will be added</string>
+    <string name="ldapi_dialog_install_help">Please go to market and install LoaderDroid there. Once it is installed, return back here and your loading will be added</string>
     <string name="ldapi_dialog_update_title">Please update Loader Droid first</string>
     <string name="ldapi_dialog_update_description">If you want efficiently load your link, please update LoaderDroid</string>
-    <string name="ldapi_dialog_update_help">Please go to Google Play and update LoaderDroid there. Once it is updated, return back here and your loading will be added</string>
-    <string name="ldapi_go_google_play">Go To Google Play</string>
-    <string name="ldapi_no_google_play_toast">Unfortunately, you don\'t have Google Play installed on your device</string>
+    <string name="ldapi_dialog_update_help">Please go to market and update LoaderDroid there. Once it is updated, return back here and your loading will be added</string>
+    <string name="ldapi_no_google_play_toast">Unfortunately, you don\'t have Market installed on your device</string>
 </resources>

@@ -30,19 +30,34 @@ public class LoaderDroidPublicAPI {
 	public static final String EXTRA_API_VERSION = "api_version";
 	public static final String EXTRA_ASK_FOR_DIRECTORY = "ask_for_directory";
 	public static final String EXTRA_USE_DEFAULT_DIRECTORY = "use_default_directory";
+	public static final String EXTRA_COOKIES = "cookies";
+	public static final String EXTRA_REFERER = "referer";
 	
 	public static final String LOADER_DROID_PACKAGE = "org.zloy.android.downloader";
 	public static final Uri LOADER_DROID_MARKET_URI = Uri.parse("https://play.google.com/store/apps/details?id="+LOADER_DROID_PACKAGE);
+	public static final Uri LOADER_DROID_SLIDEME_URI = Uri.parse("sam://details?bundleId=5a83a27e-920d-11e2-8af8-1670ef61174f");
 	public static final String ALTERNATIVE_DOWNLOAD_LINK = "http://loader-droid-public-api.googlecode.com/files/LoaderDroid-0.8.1.apk";
 	
 	public static final String RESULT_ACTION_DOWNLOAD_COMPLETED = "org.zloy.android.downloader.action.DOWNLOAD_COMPLETED";
 	public static final String RESULT_ACTION_DOWNLOAD_FAILED = "org.zloy.android.downloader.action.DOWNLOAD_FAILED";
 	public static final String RESULT_EXTRA_FILE = "file";
 	
-	// First version which supports open api
+	/**
+	 *  First version which supports open api
+	 */
 	public static final int VERSION_WITH_MINIMUM_SUPPORT = 44;
+	/**
+	 * Version which supports silent add (adding loading via broadcast message)
+	 */
 	public static final int VERSION_WITH_SILENT_ADD = 45;
+	/**
+	 * TODO:
+	 */
 	public static final int VERSION_WITH_OPEN_DETAILS_ACTIVITY = 47;
+	/**
+	 * Version which supports cookies inside request
+	 */
+	public static final int VERSION_WITH_COOKIES = 66;
 	
 	public static int API_VERSION = 1; 
 	
@@ -86,6 +101,69 @@ public class LoaderDroidPublicAPI {
 	public static boolean isLoaderDroidRequireUpdate(Context ctx) {
 		int version = getLoaderDroidVersion(ctx);
 		return version > 0 && version < VERSION_WITH_MINIMUM_SUPPORT;
+	}
+	
+	public static boolean addLoading(MissingLDAction missingLDAction, Context ctx, LoadingRequest request) {
+		final String url = request.getLink();
+		final String name = request.getName();
+		final AllowedConnection allowedConnection = request.getAllowedConnection();
+		final Directory directory = request.getDirectory();
+		final String cookies = request.getCookies();
+		final String referer = request.getReferer();
+		
+		final int loaderVersion = getLoaderDroidVersion(ctx);
+		
+		Intent intent;
+		boolean allowSilentAdd = false;
+		// No loader droid, or it should be updated
+		if (loaderVersion < VERSION_WITH_MINIMUM_SUPPORT) {
+			if (missingLDAction == MissingLDAction.ASK_USER_TO_INSTALL_LD) {
+				intent = new Intent(ctx, AddLoadingActivity.class);
+			} else {
+				return false;
+			}
+		} else if (cookies != null && loaderVersion < VERSION_WITH_COOKIES) {
+			if (missingLDAction == MissingLDAction.ASK_USER_TO_INSTALL_LD) {
+				intent = new Intent(ctx, AddLoadingActivity.class);
+			} else {
+				return false;
+			}
+		} else {
+			intent = new Intent(ACTION_ADD_LOADING);
+			if (loaderVersion >= VERSION_WITH_SILENT_ADD) {
+				allowSilentAdd = isSilentMode(name, allowedConnection, directory);
+			}
+		}
+		
+		intent.setData(Uri.parse(url));
+		intent.putExtra(EXTRA_NAME, name);
+		if (allowedConnection != null) {
+			intent.putExtra(EXTRA_ALLOWED_CONNECTION, allowedConnection.name());
+		}
+		if (directory == Directory.ASK_USER_FOR_DIRECTORY) {
+			intent.putExtra(EXTRA_ASK_FOR_DIRECTORY, true);
+		} else if (directory == Directory.USE_DEFAULT_DIRECTORY) {
+			intent.putExtra(EXTRA_USE_DEFAULT_DIRECTORY, true);
+		} else if (directory != null) {
+			intent.putExtra(EXTRA_DIRECTORY, directory.getAbsolutePath());
+		}
+		if (cookies != null) {
+			intent.putExtra(EXTRA_COOKIES, cookies);
+		}
+		if (referer != null) {
+			intent.putExtra(EXTRA_REFERER, referer);
+		}
+			
+		intent.putExtra(EXTRA_API_VERSION, API_VERSION); // For future releases
+		try {
+			if (allowSilentAdd)
+				ctx.sendBroadcast(intent);
+			else
+				ctx.startActivity(intent);
+			return true;
+		} catch (ActivityNotFoundException e) {
+			return false;
+		}
 	}
 	
 	/**
@@ -152,48 +230,12 @@ public class LoaderDroidPublicAPI {
 	 * @return false if LD is not installed on device
 	 */
 	public static boolean addLoading(MissingLDAction missingLDAction, Context ctx, String url, String name, AllowedConnection allowedConnection, Directory directory) {
-		final int loaderVersion = getLoaderDroidVersion(ctx);
-		
-		Intent intent;
-		boolean allowSilentAdd = false;
-		// No loader droid, or it should be updated
-		if (loaderVersion < VERSION_WITH_MINIMUM_SUPPORT) {
-			if (missingLDAction == MissingLDAction.ASK_USER_TO_INSTALL_LD) {
-				intent = new Intent(ctx, AddLoadingActivity.class);
-			} else {
-				return false;
-			}
-		} else {
-			intent = new Intent(ACTION_ADD_LOADING);
-			if (loaderVersion >= VERSION_WITH_SILENT_ADD) {
-				allowSilentAdd = isSilentMode(name, allowedConnection, directory);
-			}
-		}
-		
-		intent.setData(Uri.parse(url));
-		intent.putExtra(EXTRA_NAME, name);
-		if (allowedConnection != null) {
-			intent.putExtra(EXTRA_ALLOWED_CONNECTION, allowedConnection.name());
-		}
-		if (directory == Directory.ASK_USER_FOR_DIRECTORY) {
-			intent.putExtra(EXTRA_ASK_FOR_DIRECTORY, true);
-		} else if (directory == Directory.USE_DEFAULT_DIRECTORY) {
-			intent.putExtra(EXTRA_USE_DEFAULT_DIRECTORY, true);
-		} else if (directory != null) {
-			intent.putExtra(EXTRA_DIRECTORY, directory.getAbsolutePath());
-		}
-		intent.putExtra(EXTRA_API_VERSION, API_VERSION); // For future releases
-		try {
-			if (allowSilentAdd)
-				ctx.sendBroadcast(intent);
-			else
-				ctx.startActivity(intent);
-			return true;
-		} catch (ActivityNotFoundException e) {
-			return false;
-		}
+		LoadingRequest request = new LoadingRequest(url);
+		request.setName(name);
+		request.setAllowedConnection(allowedConnection);
+		request.setDirectory(directory);
+		return addLoading(missingLDAction, ctx, request);
 	}
-	
 	
 	/**
 	 * Every time LoaderDroid completes loading, it sends broadcast message 
